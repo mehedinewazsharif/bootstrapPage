@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pagination Example</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    .pagination {
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Pagination Example</h1>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody id="dataContainer"></tbody>
+    </table>
+    <nav>
+      <ul class="pagination"></ul>
+    </nav>
+  </div>
+
+  <script>
+    // Sample data for demonstration
+    const data = [
+      { id: 1, name: 'John Doe', email: 'johndoe@example.com' },
+      { id: 2, name: 'Jane Smith', email: 'janesmith@example.com' },
+      { id: 3, name: 'Bob Johnson', email: 'bobjohnson@example.com' },
+      { id: 4, name: 'Alice Williams', email: 'alicewilliams@example.com' },
+      { id: 5, name: 'Michael Brown', email: 'michaelbrown@example.com' },
+      { id: 6, name: 'Emily Davis', email: 'emilydavis@example.com' },
+      { id: 7, name: 'David Wilson', email: 'davidwilson@example.com' },
+      { id: 8, name: 'Sarah Miller', email: 'sarahmiller@example.com' },
+      { id: 9, name: 'Daniel Anderson', email: 'danielanderson@example.com' },
+      { id: 10, name: 'Olivia Taylor', email: 'oliviataylor@example.com' },
+      { id: 11, name: 'Matthew Thomas', email: 'matthewthomas@example.com' },
+      { id: 12, name: 'Sophia Martinez', email: 'sophiamartinez@example.com' },
+      { id: 13, name: 'James Clark', email: 'jamesclark@example.com' },
+      { id: 14, name: 'Elizabeth Rodriguez', email: 'elizabethrodriguez@example.com' },
+      { id: 15, name: 'William Lee', email: 'williamlee@example.com' },
+      { id: 16, name: 'Ava Lewis', email: 'avalewis@example.com' },
+      { id: 17, name: 'Joseph Walker', email: 'josephwalker@example.com' },
+      { id: 18, name: 'Mia Hall', email: 'miahall@example.com' },
+      { id: 19, name: 'Charles Young', email: 'charlesyoung@example.com' },
+      { id: 20, name: 'Lily Hernandez', email: 'lilyhernandez@example.com' },
+      { id: 21, name: 'Benjamin Wright', email: 'benjaminwright@example.com' },
+      { id: 22, name: 'Grace Scott', email: 'gracescott@example.com' },
+      { id: 23, name: 'Jonathan Green', email: 'jonathangreen@example.com' },
+      { id: 24, name: 'Natalie Adams', email: 'natalieadams@example.com' },
+      { id: 25, name: 'Andrew Baker', email: 'andrewbaker@example.com' },
+    ];
+
+    const itemsPerPage = 5;
+    const totalPages = Math.ceil(data.length / itemsPerPage);
+    let currentPage = 1;
+
+    function displayData(page) {
+      const start = (page - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      const pageData = data.slice(start, end);
+
+      const dataContainer = document.getElementById('dataContainer');
+      dataContainer.innerHTML = '';
+
+      pageData.forEach(item => {
+        const row = document.createElement('tr');
+        const idCell = document.createElement('td');
+        idCell.textContent = item.id;
+        row.appendChild(idCell);
+        const nameCell = document.createElement('td');
+        nameCell.textContent = item.name;
+        row.appendChild(nameCell);
+        const emailCell = document.createElement('td');
+        emailCell.textContent = item.email;
+        row.appendChild(emailCell);
+        dataContainer.appendChild(row);
+      });
+    }
+
+    function setupPagination() {
+      const paginationContainer = document.querySelector('.pagination');
+      paginationContainer.innerHTML = '';
+
+      const prevButton = createPaginationButton('Previous', currentPage - 1);
+      paginationContainer.appendChild(prevButton);
+
+      for (let i = 1; i <= totalPages; i++) {
+        const pageButton = createPaginationButton(i, i);
+        paginationContainer.appendChild(pageButton);
+      }
+
+      const nextButton = createPaginationButton('Next', currentPage + 1);
+      paginationContainer.appendChild(nextButton);
+    }
+
+    function createPaginationButton(label, page) {
+      const button = document.createElement('li');
+      button.classList.add('page-item');
+      const link = document.createElement('a');
+      link.classList.add('page-link');
+      link.href = '#';
+      link.textContent = label;
+      button.appendChild(link);
+
+      if (currentPage === page) {
+        button.classList.add('active');
+      } else {
+        link.addEventListener('click', () => {
+          currentPage = page;
+          displayData(currentPage);
+          setupPagination();
+        });
+      }
+
+      return button;
+    }
+
+    displayData(currentPage);
+    setupPagination();
+  </script>
+</body>
+</html>
